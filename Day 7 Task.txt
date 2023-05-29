@@ -62,19 +62,22 @@
 
 5. Print the country which uses US Dollars as currency.
 
-			var request = new XMLHttpRequest();
-			request.open('Get', 'https://restcountries.com/v3.1/all', true)
-			request.send();
-			request.onload = function () {
-					var data = JSON.parse(this.response);
-					var cur=[];
-					for(i=0;i<data.length;i++){
-						if(data[i].currencies[0].code==="USD")
-						{
-							console.log("name:",data[i].name,"==>",data[i].currencies[0].code)
-						}
-					}
-				}
+			fetch("https://restcountries.com/v3.1/all")
+			.then((response) => response.json())
+			.then((data) => printData(filterData(data)))
+			.catch((error) => console.log(error));
+
+		      function filterData(data) {
+			let filteredData = [];
+			if (data.length > 0) {
+			  filteredData = data.filter((data) => data?.currencies?.USD);
+			}
+			return filteredData;
+		      }
+
+		      function printData(data) {
+			console.log(data.length);
+		      }
 				
 				
 				
